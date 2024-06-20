@@ -72,6 +72,9 @@ public class Robot extends TimedRobot implements Logged {
   @Log.NT private int[] arrayBoxed = {0, 1, 2};
   @Log.File private int number = 0;
   @Log.File.Once String onceFile = "test";
+  
+
+  private Field2d otherField = new Field2d();
 
   BooleanEntry fileOnlyEntry = NetworkTableInstance.getDefault().getBooleanTopic("/fileOnly").getEntry(false);
 
@@ -100,6 +103,7 @@ public class Robot extends TimedRobot implements Logged {
     log("stringValue", samples, OVERRIDE_FILE_ONLY);
     log("stringValueDebug", samples, NOT_FILE_ONLY);
     log("structTestDebug", translation2d, NOT_FILE_ONLY);
+    log("sendable", otherField);
     samples++;
     debugSamples++;
     lowbandwidthSamples++;

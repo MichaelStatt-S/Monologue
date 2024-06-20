@@ -2,6 +2,7 @@ package monologue;
 
 import edu.wpi.first.util.struct.StructSerializable;
 import edu.wpi.first.util.struct.Struct;
+import edu.wpi.first.util.sendable.Sendable;
 
 /**
  * Interface for classes that can hold {@link Monologue} annotated fields for
@@ -206,6 +207,31 @@ public interface Logged {
       names[i] = value[i].name();
     }
     Monologue.ntLogger.put(getFullPath(this) + "/" + key, names, level);
+    return value;
+  }
+
+  /**
+   * Logs a value with the default log level.
+   * The key is relative to the objects path this is being called in.
+   * 
+   * @param key The key to log the value under relative to the objects path.
+   * @param value The value to log.
+   */
+  public default <S extends Sendable> S log(String key, S value) {
+    return log(key, value, LogLevel.DEFAULT);
+  }
+
+  /**
+   * Logs a value with the specified log level.
+   * The key is relative to the objects path this is being called in.
+   * 
+   * @param key The key to log the value under relative to the objects path.
+   * @param value The value to log.
+   * @param level The log level to log the value under.
+   */
+  public default <S extends Sendable> S log(String key, S value, LogLevel level) {
+    if (!Monologue.isMonologueReady(key) || Monologue.isMonologueDisabled()) return value;
+    Monologue.ntLogger.addSendable(getFullPath(this), key, value);
     return value;
   }
 }
